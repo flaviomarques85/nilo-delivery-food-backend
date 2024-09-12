@@ -1,0 +1,24 @@
+### List all tickets
+GET http://localhost:3001/api/ticket
+
+### Get ticket by ticket_num 
+GET http://localhost:3001/api/ticket/87Q1M
+
+### Create a new ticket
+POST http://localhost:3001/api/ticket
+Content-Type: application/json
+
+{
+   "ticket_num": "AF99BX",
+   "valid": "true",
+   "used": "false"
+}
+
+### List all orders
+GET http://localhost:3001/api/orders
+
+### Get order by order_number
+GET http://localhost:3001/api/orders/123456
+
+### Create a new order
+POST http://localhost:3001/api/orders
