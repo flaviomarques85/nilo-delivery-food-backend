@@ -19,7 +19,31 @@ exports.createTicket = async (body) => {
 };
 
 exports.updateTicket = async (ticket_num, body) => {
-    return await Ticket.findOneAndUpdate(ticket_num, body, { new: true });
+    // Validação dos campos used e valid
+    if ('used' in body && typeof body.used !== 'boolean') {
+        logger.error('Campo "used" deve ser um booleano');
+        throw new Error('Campo "used" deve ser um booleano');
+    }
+
+    if ('valid' in body && typeof body.valid !== 'boolean') {
+        logger.error('Campo "valid" deve ser um booleano');
+        throw new Error('Campo "valid" deve ser um booleano');
+    }
+
+    // Se a validação passar, atualiza o ticket
+    const updatedTicket = await Ticket.findOneAndUpdate(
+        { ticket_num: ticket_num },
+        body,
+        { new: true }
+    );
+
+    if (!updatedTicket) {
+        logger.error(`Ticket não encontrado: ${ticket_num}`);
+        throw new Error('Ticket não encontrado');
+    }
+
+    logger.info(`Ticket atualizado: ${ticket_num}`);
+    return updatedTicket;
 };
 
 exports.deleteTicket = async (ticket_num) => {
