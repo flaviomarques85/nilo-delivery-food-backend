@@ -9,10 +9,12 @@ app.use(cors());
 app.use(express.json());
 
 //Routes
-const ticketRoutes = require('./routes/routes');
-const ordersRoutes = require('./routes/orders');
-app.use('/api/ticket', ticketRoutes);
-app.use('/api/orders', ordersRoutes);
+const healthcheckRoutes = require('./routes/healthcheck ')
+const ticketRoutes = require('./routes/routes')
+const ordersRoutes = require('./routes/orders')
+app.use('/api/healthcheck', healthcheckRoutes)
+app.use('/api/ticket', ticketRoutes)
+app.use('/api/orders', ordersRoutes)
 
 // Connect to MongoDB
 connect();
