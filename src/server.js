@@ -8,6 +8,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+//port
+const port = process.env.PORT || 3001
+
 //Routes
 const healthcheckRoutes = require('./routes/healthcheck ')
 const ticketRoutes = require('./routes/routes')
@@ -19,6 +22,6 @@ app.use('/api/orders', ordersRoutes)
 // Connect to MongoDB
 connect();
 // Start the server
-app.listen(3001, () => {
-    console.log(`Application is running on port 3001`);
+app.listen(port, () => {
+    console.log(`Application is running on port ${port}`);
 });
