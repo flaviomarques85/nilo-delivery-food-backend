@@ -27,7 +27,7 @@ Content-Type: application/json
 GET http://localhost:3001/api/orders
 
 ### Get order by order_number
-GET http://localhost:3001/api/orders/ORD12345
+GET http://localhost:3001/api/orders/ORD1726444313058
 
 ### Create a new order
 POST http://localhost:3001/api/orders
@@ -49,4 +49,15 @@ Content-Type: application/json
     }
   ]
 }
+
+### Update a Order by id
+PUT http://localhost:3001/api/orders/66e77319d2e60e22b57ea5bc
+Content-Type: application/json
+
+{
+  "order_status":"cancelado"
+}
+
+### Delete a Order by id
+DELETE http://localhost:3001/api/orders/66e77319d2e60e22b57ea5bc
 

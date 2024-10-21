@@ -1,6 +1,7 @@
 const { Order } = require('../models/OrdersModel');
 const { Item } = require('../models/ItemsModel');
 const mongoose = require('mongoose');
+const logger = require('../utils/logger');
 
 exports.createOrder = async (orderData) => {
     let session;
@@ -60,4 +61,35 @@ exports.getOrderById = async (id) => {
 };
 exports.updateOrder = async (id, order) => {
     return await Order.findByIdAndUpdate(id, order);
+};
+
+exports.deleteOrder = async (id) => {
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
+    try {
+        // Encontrar a ordem
+        const order = await Order.findById(id).session(session);
+        if (!order) {
+            await session.abortTransaction();
+            logger.warn(`Pedido ${id} não encontrado para exclusão`);
+            return { status: 404, message: 'Pedido não encontrado' };
+        }
+
+        // Deletar todos os itens relacionados
+        await Item.deleteMany({ _id: { $in: order.items } }).session(session);
+
+        // Deletar a ordem
+        await Order.findByIdAndDelete(id).session(session);
+
+        await session.commitTransaction();
+        logger.info(`Pedido ${id} e seus itens relacionados foram deletados com sucesso`);
+        return { status: 200, message: 'Pedido e itens relacionados deletados com sucesso' };
+    } catch (error) {
+        await session.abortTransaction();
+        logger.error(`Erro ao deletar o pedido ${id}:`, error);
+        throw error;
+    } finally {
+        session.endSession();
+    }
 };

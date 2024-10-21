@@ -40,3 +40,13 @@ exports.updateOrder = async (req, res) => {
     }
 };
 
+exports.deleteOrder = async (req, res) => {
+    try {
+        await OrdersService.deleteOrder(req.params.id);
+        res.status(204).send();
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+};
+
