@@ -1,5 +1,6 @@
 const { Order } = require('../models/OrdersModel');
 const { Item } = require('../models/ItemsModel');
+const { Ticket } = require('../models/TicketsModel');
 const mongoose = require('mongoose');
 const logger = require('../utils/logger');
 
@@ -35,15 +36,33 @@ exports.createOrder = async (orderData) => {
 
         await order.save({ session });
 
+        // Atualizar os tickets como utilizados
+        const updateTicketPromises = ticketNums.map(ticket_num =>
+            Ticket.findOneAndUpdate(
+                { ticket_num },
+                { used: true },
+                { session }
+            )
+        );
+
+        const updatedTickets = await Promise.all(updateTicketPromises);
+
+        // Verificar se todos os tickets foram encontrados e atualizados
+        const notFoundTickets = updatedTickets.filter(ticket => !ticket);
+        if (notFoundTickets.length > 0) {
+            throw new Error('Alguns tickets não foram encontrados no sistema');
+        }
+
         await session.commitTransaction();
+        logger.info(`Pedido ${order.order_number} criado e tickets marcados como utilizados`);
         return order;
     } catch (error) {
-        console.error('Erro ao criar ordem:', error);
+        logger.error('Erro ao criar ordem:', error);
         if (session) {
             try {
                 await session.abortTransaction();
             } catch (abortError) {
-                console.error('Erro ao abortar transação:', abortError);
+                logger.error('Erro ao abortar transação:', abortError);
             }
         }
         throw error;
