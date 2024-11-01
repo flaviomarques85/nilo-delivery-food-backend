@@ -2,7 +2,7 @@
 GET http://localhost:3001/api/ticket
 
 ### Get ticket by ticket_num  5OERR 3PU8N NMHCG
-GET http://localhost:3001/api/ticket/3PU8N
+GET http://localhost:3001/api/ticket/Y5PTV
 
 ### Create a new ticket
 POST http://localhost:3001/api/ticket
@@ -34,18 +34,13 @@ POST http://localhost:3001/api/orders
 Content-Type: application/json
 
 {
-  "order_number": "ORD12345",
+  "order_number": "ORD1726445220560",
   "order_status": "pendente",
   "items": [
-   {
-      "item_name": "Hamburguer",
-      "quantity": 2,
-      "ticket_num": "HJK00L"
-    },
     {
       "item_name": "Refrigerante",
       "quantity": 1,
-      "ticket_num": "HJK00L"
+      "ticket_num": "Y5PTV"
     }
   ]
 }

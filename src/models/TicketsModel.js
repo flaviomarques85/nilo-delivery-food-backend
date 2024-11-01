@@ -20,4 +20,4 @@ const ticketSchema = new mongoose.Schema({
 
 const Ticket = mongoose.model('food_tickets', ticketSchema);
 
-module.exports = Ticket;
+module.exports = { Ticket };

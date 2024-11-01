@@ -1,5 +1,5 @@
 // Import any required models here
-const Ticket = require('../models/TicketsModel.js');
+const { Ticket } = require('../models/TicketsModel.js');
 const logger = require('../utils/logger');
 
 // Define your service methods
